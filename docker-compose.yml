@@ -1,12 +1,6 @@
 version: '3.4'
 
 services:
-  webapi:
-    image: ${DOCKER_REGISTRY-}webapi
-    build:
-      context: .
-      dockerfile: WebApi/Dockerfile
-
   postgres:
     image: postgres
     environment:
@@ -15,9 +9,15 @@ services:
       POSTGRES_DB: postgres
 
   webfrontend:
-    image: ${DOCKER_REGISTRY-}webfrontend
+    image: webfrontend
     build:
       context: WebFrontend
       dockerfile: Dockerfile
     volumes:
         - ./WebFrontend/src:/app/src
+
+  webapi:
+    image: webapi
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile

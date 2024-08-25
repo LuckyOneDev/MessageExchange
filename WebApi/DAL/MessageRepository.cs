@@ -19,13 +19,20 @@ namespace WebApi.DAL
         {
             using (NpgsqlConnection connection = new(_connectionString))
             {
-                string sql = "CREATE TABLE IF NOT EXISTS Messages (Index INTEGER, Date TIMESTAMP, Text VARCHAR(128));";
-                using (NpgsqlCommand command = new(sql, connection))
+                try
                 {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    _logger.LogInformation("Ensured creation of table Messages");
-                    connection.Close();
+                    string sql = "CREATE TABLE IF NOT EXISTS Messages (Index INTEGER, Date TIMESTAMP, Text VARCHAR(128));";
+                    using (NpgsqlCommand command = new(sql, connection))
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        _logger.LogInformation("Ensured creation of table Messages");
+                        connection.Close();
+                    }
+                } catch
+                {
+                    _logger.LogError("Failed to ensure creation of table Messages. Retrying...");
+                    EnsureCreated();
                 }
             }
         }
