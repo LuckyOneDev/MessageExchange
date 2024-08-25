@@ -36,9 +36,10 @@ namespace WebApi.DAL.Repositories.MessageRepository
                         connection.Close();
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    _logger.LogError("Failed to ensure creation of table Messages. Retrying...");
+                    _logger.LogError("Failed to ensure creation of table Messages. {} Retrying...", ex.Message);
+                    Thread.Sleep(1000);
                     EnsureCreated();
                 }
             }
