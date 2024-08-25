@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR.Protocol;
-using WebApi.DAL;
-using WebApi.Services;
+using WebApi.DAL.Models;
+using WebApi.DAL.Repositories.MessageRepository;
+using WebApi.Services.SocketConnectionService;
 
 namespace WebApi.Controllers
 {

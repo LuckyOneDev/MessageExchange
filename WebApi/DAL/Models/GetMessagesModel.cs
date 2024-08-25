@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.DAL
+namespace WebApi.DAL.Models
 {
     public class GetMessagesModel
     {

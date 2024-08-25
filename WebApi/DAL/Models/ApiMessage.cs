@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WebApi.DAL
+namespace WebApi.DAL.Models
 {
     public class ApiMessage
     {

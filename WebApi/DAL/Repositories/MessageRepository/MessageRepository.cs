@@ -1,16 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using Npgsql;
+using WebApi.DAL.Models;
 
-namespace WebApi.DAL
+namespace WebApi.DAL.Repositories.MessageRepository
 {
     public class MessageRepository : IMessageRepository
     {
         private string _connectionString;
         private ILogger<MessageRepository> _logger;
 
-        public MessageRepository(string connectionString, ILogger<MessageRepository> logger)
+        public MessageRepository(IConfiguration configuration, ILogger<MessageRepository> logger)
         {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException(nameof(connectionString));
+            }
             _connectionString = connectionString;
             _logger = logger;
         }
@@ -21,7 +27,7 @@ namespace WebApi.DAL
             {
                 try
                 {
-                    string sql = "CREATE TABLE IF NOT EXISTS Messages (Index INTEGER, Date TIMESTAMP, Text VARCHAR(128));";
+                    string sql = "CREATE TABLE IF NOT EXISTS Messages (Index INTEGER NOT NULL, Date TIMESTAMP NOT NULL, Text VARCHAR(128) NOT NULL);";
                     using (NpgsqlCommand command = new(sql, connection))
                     {
                         connection.Open();
@@ -29,7 +35,8 @@ namespace WebApi.DAL
                         _logger.LogInformation("Ensured creation of table Messages");
                         connection.Close();
                     }
-                } catch
+                }
+                catch
                 {
                     _logger.LogError("Failed to ensure creation of table Messages. Retrying...");
                     EnsureCreated();

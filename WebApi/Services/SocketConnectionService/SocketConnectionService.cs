@@ -1,14 +1,14 @@
 ﻿using System.Net.WebSockets;
 using System.Text.Json;
-using WebApi.DAL;
+using WebApi.DAL.Models;
 
-namespace WebApi.Services
+namespace WebApi.Services.SocketConnectionService
 {
     public class SocketConnectionService : ISocketConnectionService
     {
         private readonly List<WebSocket> _clients = new();
-        private readonly ILogger<ISocketConnectionService> _logger;
-        public SocketConnectionService(ILogger<ISocketConnectionService> logger)
+        private readonly ILogger<SocketConnectionService> _logger;
+        public SocketConnectionService(ILogger<SocketConnectionService> logger)
         {
             _logger = logger;
         }
@@ -44,7 +44,8 @@ namespace WebApi.Services
                         true,
                         CancellationToken.None
                     );
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     _clients.Remove(client);
                     i--;

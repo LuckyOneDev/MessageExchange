@@ -1,11 +1,10 @@
-using WebApi.DAL;
+using WebApi.DAL.Repositories.MessageRepository;
 using WebApi.Services;
+using WebApi.Services.SocketConnectionService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -15,18 +14,12 @@ builder.Services.AddLogging(config =>
     config.AddDebug();
 });
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (connectionString == null)
-{
-    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-}
-
-builder.Services.AddSingleton<ISocketConnectionService>(x => new SocketConnectionService(x.GetRequiredService<ILogger<ISocketConnectionService>>()));
-builder.Services.AddSingleton<IMessageRepository>(x => new MessageRepository(connectionString, x.GetRequiredService<ILogger<MessageRepository>>()));
+builder.Services.AddSingleton<ISocketConnectionService, SocketConnectionService>();
+builder.Services.AddSingleton<IMessageRepository, MessageRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure Swagger.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -35,6 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.Services.GetRequiredService<IMessageRepository>().EnsureCreated();
 
+// Add websocket support.
 app.UseWebSockets();
 
 app.UseHttpsRedirection();

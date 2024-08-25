@@ -1,4 +1,6 @@
-﻿namespace WebApi.DAL
+﻿using WebApi.DAL.Models;
+
+namespace WebApi.DAL.Repositories.MessageRepository
 {
     public interface IMessageRepository
     {

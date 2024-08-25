@@ -1,7 +1,7 @@
 ﻿using System.Net.WebSockets;
-using WebApi.DAL;
+using WebApi.DAL.Models;
 
-namespace WebApi.Services
+namespace WebApi.Services.SocketConnectionService
 {
     public interface ISocketConnectionService
     {
