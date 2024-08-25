@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 export function SendMessage() {
     const inputRef = useRef<HTMLInputElement>(null);
     const [index, setIndex] = useState(0);
+
     return <div>
         <h1>Send message</h1>
         <p>Index: {index}</p>

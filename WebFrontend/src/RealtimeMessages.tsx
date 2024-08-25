@@ -14,6 +14,10 @@ export function RealtimeMessages() {
                 setMessages((messages) => [...messages, JSON.parse(event.data) as ApiMessage]);
             };
         }
+
+        return () => {
+            socket.current?.close();
+        }
     }, []);
 
     return <div>
